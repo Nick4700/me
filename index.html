@@ -1,0 +1,745 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <style>
+        a {
+            color: black;
+        }
+
+        #menu-links {
+            position: absolute;
+            top: 17px;
+            right: 75px;
+            padding: 5px;
+            border: 1px solid black;
+        }
+
+        .notification-icon {
+            position: relative;
+            display: inline-block;
+        }
+
+        .notification-icon .cross {
+            position: absolute;
+            top: -9px;
+            border-radius: 2px;
+            left: 17px;
+            width: 10%;
+            height: 150%;
+            background-color: rgba(255, 0, 0);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+
+        .notification-icon.active .cross {
+            display: flex;
+        }
+
+        .menu {
+            cursor: pointer;
+            border: none;
+            border-radius: 0px;
+            border-bottom: 2px solid blue;
+        }
+
+        .menu:hover {
+            border-bottom: 2px solid #007bff;
+        }
+
+        .content {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .announcement {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .announcement-date {
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .announcement-author {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .announcement-tag {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-right: 5px;
+        }
+
+        .unread {
+            background-color: #007bff;
+            color: white
+        }
+
+        .unread .announcement-author,
+        .unread .announcement-date {
+            color: #dddddd;
+        }
+
+        .list-group-item.menu {
+            width: 33.33%;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d-flex justify-content-between align-items-center p-3 bg-light">
+        <a href="/">
+            <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg"
+                width="30" height="30" class="d-inline-block align-top" alt="GTU Logo">
+        </a>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" id="toggle-menu">
+                <i class="fas fa-ellipsis-v"></i>
+            </button>
+        </div>
+    </div>
+    <div class="container-fluid ">
+        <div id="menu-links" class="float-right hidden">
+            <select placeholder="Filtrele" id="">
+                <option value="">Filtrele</option>
+                <option value="">Tümü</option>
+                <option value="">Duyurular</option>
+                <option value="">Takiplerim</option>
+            </select>
+            <form id="sort-form" action="/" method="GET">
+                <select id="sort-options" name="sirala" onchange="document.getElementById('sort-form').submit();">
+                    <option value="oto">Sırala</option>
+                    <option value="oto">otomatik</option>
+                    <option value="share_date">Paylaşılma </option>
+                    <option value="event_date">Başlama</option>
+                </select>
+            </form>
+        </div>
+    </div>
+
+    <div class="container mt-1">
+        <div class="fluid-center">
+            <ul class="list-group list-group-horizontal" style="border-radius: 0px;">
+                <li class="list-group-item menu" data-target="clubs" style="border-radius: 0px;">Topluluklar</li>
+                <li class="list-group-item menu" data-target="announcements">Duyurular<span id="unread-count"
+                        style="color:#007bff;">(2)</span></li>
+                <li class="list-group-item menu" data-target="calendar">Takvim</li>
+            </ul>
+        </div>
+        <div class="row mt-4">
+            <div class="col-12">
+                <div id="clubs" class="content">
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/61'">
+                            
+                            <h5 class="card-title mt-2">2025-2026 Güz ve Bahar Yarıyılı İçin Erasmus+ Programı Başvuruları</h5>
+                            <div class="p card-text" maxlength="10">2025-2026 Güz ve Bahar Yarıyılı İçin Erasmus+ Programı Başvuruları</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-01-20
+                                
+
+                                
+
+                                
+                                - <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/68'">
+                            
+                            <h5 class="card-title mt-2">Bahar Yarıyılı Katkı Payı Ödemeleri</h5>
+                            <div class="p card-text" maxlength="10">Bahar Yarıyılı Katkı Payı Ödemeleri</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-03
+                                
+
+                                
+
+                                
+                                - <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/79'">
+                            
+                            <h5 class="card-title mt-2">Mazeretli Ders Kayıt Haftası</h5>
+                            <div class="p card-text" maxlength="10">Mazeretli Ders Kayıt Haftası</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-24
+                                
+
+                                
+
+                                
+                                - <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/80'">
+                            
+                            <h5 class="card-title mt-2">Yarı Yıl Sınavı/D Sınavı Sonuç Listelerinin Bölüm Başkanlıkları Tarafından Dekanlıklara, MYO Müdürlüklerine Teslimi İçin Son Gün</h5>
+                            <div class="p card-text" maxlength="10">Yarı Yıl Sınavı/Bütünleme Sınav Sonuç Listelerinin Anabilim Dalı Başkanlıkları Tarafından Enstitü Müdürlüklerine Teslimi İçin Son Gün</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+
+                                
+
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/81'">
+                            
+                            <h5 class="card-title mt-2">Tek Ders Sınav Sonuçlarının Dekanlık Makamına, MYO Müdürlüklerine  Teslimi</h5>
+                            <div class="p card-text" maxlength="10"></div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+
+                                
+
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/82'">
+                            
+                            <h5 class="card-title mt-2">Öğretim Üyelerinin Diğer Üniversitelerde Ders Vermek Üzere Görevlendirilebilmeleri İçin Bölümlere Başvuru Son Günü</h5>
+                            <div class="p card-text" maxlength="10">Öğretim Üyelerinin Diğer Üniversitelerde Ders Vermek Üzere Görevlendirilebilmeleri İçin Bölümlere Başvuru Son Günü</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+
+                                
+
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/83'">
+                            
+                            <h5 class="card-title mt-2"></h5>
+                            <div class="p card-text" maxlength="10">Ocak Ayında Doktora Yeterlik Sınavına Giren Öğrencilerin Doktora Tez İzleme Komitesi Oluşturma Son Günü</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+
+                                
+
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/84'">
+                            
+                            <h5 class="card-title mt-2">Yarı Yıl Sınavı Sonuç Listelerinin Bölüm Başkanlıkları Tarafından Dekanlıklara, MYO Müdürlüklerine Teslimi İçin Son Gün</h5>
+                            <div class="p card-text" maxlength="10">Yarı Yıl Sınavı/Bütünleme
+Sınav Sonuç Listelerinin Anabilim Dalı Başkanlıkları Tarafından Enstitü Müdürlüklerine Teslimi İçin Son Gün</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-02-28
+                                
+
+                                
+
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="card m-3 pt-1 duyuru">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="club-info d-flex align-items-center">
+
+                                
+                                <a href="/club/GTU">
+                                    
+                                    <img src="https://www.gtu.edu.tr/Files/basin_ve_halkla_iliskiler/kurumsal_kimlik/raster_logolar/GTU_LOGO_2500X1600_JPG_EN.jpg" alt="Kulüp Fotoğrafı" class="pp">
+                                    
+                                    <h5 class="ms-2">GTU</h5>
+                                </a>
+                            </div>
+                            <div class="btn btn-warning notification-icon" id="notificationIcon"
+                                onclick="toggleNotification()">
+                                <i class="fas fa-bell"></i>
+                                <div class="cross"></div>
+                            </div>
+                        </div>
+                        <div class="card-body"
+                            onclick="window.location.href='/events/85'">
+                            
+                            <h5 class="card-title mt-2">Ders Ekleme ve Çıkarma</h5>
+                            <div class="p card-text" maxlength="10">Ders Ekleme ve Çıkarma</div>
+                            <p>
+                                
+                                <br>
+                                <i class="fas fa-calendar-alt"></i> 2025-03-03
+                                
+
+                                
+
+                                
+                                - <i class="fas fa-calendar-alt"></i> 2025-03-07
+                                
+                                
+                            </p>
+                            
+                        </div>
+                    </div>
+                    
+                </div>
+                <!-- Duyurular-->
+                <div id="announcements" class=" content">
+                    <div class="announcement-tag">GTU</div>
+                    <div class="announcement-tag">Bilgisayar Mühendisliği</div>
+                    <div class="announcement-tag">Mühendislik Fakültesi</div>
+                    <div style="width: 100%; height:15px;"></div>
+                    <div class="announcement unread">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Yeni dönem kayıtları başlamıştır.</div>
+                        <div class="announcement-date">03.11.2024</div>
+                    </div>
+                    <div class="announcement unread">
+                        <div class="announcement-author">Bilgisayar Mühendisliği</div>
+                        <div class="announcement-content"> 2024 - 2025 Güz Dönemi Lisans Temel Bilimler ve Servis
+                            Derslerinin Vize Sınavı Programı </div>
+                        <div class="announcement-date">02.11.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">Mühendislik Fakültesi</div>
+                        <div class="announcement-content">Ders Ekleme Çıkarma Duyurusu</div>
+                        <div class="announcement-date">01.11.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">2025 Yılı BAP/ADEP (Araştırma Üniversitesi Destek Programı)
+                            Projesi 2.Duyuru
+                        </div>
+                        <div class="announcement-date">26.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">2025 Yılı BAP/ADEP (Araştırma Üniversitesi Destek Programı)
+                            Projesi 2.Duyuru
+                        </div>
+                        <div class="announcement-date">25.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">2025 Yılı BAP/ADEP (Araştırma Üniversitesi Destek Programı)
+                            Projesi 2.Duyuru
+                        </div>
+                        <div class="announcement-date">20.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Yaz okulu başvuruları açıldı.</div>
+                        <div class="announcement-date">20.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Mezuniyet töreni tarihi belli oldu.</div>
+                        <div class="announcement-date">10.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Mezuniyet töreni tarihi belli oldu.</div>
+                        <div class="announcement-date">07.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Mezuniyet töreni tarihi belli oldu.</div>
+                        <div class="announcement-date">06.10.2024</div>
+                    </div>
+                    <div class="announcement">
+                        <div class="announcement-author">GTU</div>
+                        <div class="announcement-content">Mezuniyet töreni tarihi belli oldu.</div>
+                        <div class="announcement-date">06.10.2024</div>
+                    </div>
+                </div>
+                <div id="calendar" class="content">
+                    <div class="announcement-tag">GTU</div>
+                    <div class="announcement-tag">Bilgisayar Mühendisliği</div>
+                    <div class="announcement-tag">Bilgisayar Topluluğu Kulübü</div>
+                    <div class="announcement-tag">Yapay Zeka Kulübü</div>
+                    <br><br>
+                    <div class="btn-group mb-3" role="group" aria-label="Takvim Görünümü">
+                        <button type="button" class="btn btn-secondary" id="toggle-view-btn">
+                            <i class="fas fa-calendar-alt"></i> Görünümü Değiştir
+                        </button>
+                    </div>
+                    <div id="monthly-view" class="calendar-view">
+                        <iframe
+                            src="https://calendar.google.com/calendar/embed?src=tr.turkish%23holiday%40group.v.calendar.google.com&ctz=Europe%2FIstanbul"
+                            style="border: 0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+                    </div>
+                    <div id="list-view" class="calendar-view" style="display: none;">
+                        <div class="announcement">
+                            <div class="announcement-author">Bilgisayar Topluluğu</div>
+                            <div class="announcement-content">BT Hackathon Etkinliği</div>
+                            <div class="announcement-date">7.11.2024</div>
+                        </div>
+                        <div class="announcement">
+                            <div class="announcement-author">Yapay Zeka Kulubü</div>
+                            <div class="announcement-content">chatGPT'nin gelecekteki yeri konusunda konuşma</div>
+                            <div class="announcement-date">07.11.2024</div>
+                        </div>
+                        <div class="announcement">
+                            <div class="announcement-author">Yapay Zeka Kulubü</div>
+                            <div class="announcement-content">Algoritma Yarışması</div>
+                            <div class="announcement-date">08.11.2024</div>
+                        </div>
+                        <div class="announcement">
+                            <div class="announcement-author">Bilgisayar Topluluğu Kulubü</div>
+                            <div class="announcement-content">Python atölyesi</div>
+                            <div class="announcement-date">09.11.2024</div>
+                        </div>
+                        <div class="announcement">
+                            <div class="announcement-author">Resmi Günler</div>
+                            <div class="announcement-content">Atatürk'ü Anma Günü</div>
+                            <div class="announcement-date">10.11.2024</div>
+                        </div>
+                        <div class="announcement">
+                            <div class="announcement-author">GTU</div>
+                            <div class="announcement-content">2024 -2025 Bahar Yarıyılı Açılacak Derslerin Enstitü
+                                Müdürlüklerine Bildirilmesi
+                                İçin Son Gün</div>
+                            <div class="announcement-date">20.12.2024</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br>
+<div class="container-fluid ">
+    <div id="social-links" class="hidden">
+
+        <!--
+        <div>
+            Günün Yemeği (saate/ ilk girişe göre)
+        </div>
+        <br>-->
+        <div id="shorts" class="fluid-center">
+            <a href=""><i class="fas fa-ellipsis-h"></i></a>
+            <a href=""><i class="fas fa-ellipsis-h"></i></a>
+            <a href=""><i class="fas fa-ellipsis-h"></i></a>
+        </div>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-bottom">
+    <div class="container-fluid">
+        <ul class="navbar-nav mx-auto d-flex flex-row">
+            <li class="nav-item">
+                <a class="nav-link" href="/">
+                    <i class="fas fa-home"></i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="toggle-links" class="nav-link" href="#" data-bs-toggle="modal">
+                    &#160&#160<i class="fas fa-ellipsis-h"></i>&#160&#160
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/profile">
+                    &#160&#160&#160<i class="fas fa-user"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<script>
+    document.getElementById('toggle-links').addEventListener('click', function () {
+        var socialLinks = document.getElementById('social-links');
+        if (socialLinks.classList.contains('hidden')) {
+            socialLinks.classList.remove('hidden');
+        } else {
+            socialLinks.classList.add('hidden');
+        }
+    });
+
+</script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+
+        function toggleNotification() {
+            var icon = document.getElementById('notificationIcon');
+            if (!icon.classList.contains("active")) {
+                alert("Bu etkinlikten bir saat önce size bildirim gönderilecektir.");
+            }
+            icon.classList.toggle('active');
+        }
+        document.getElementById('toggle-menu').addEventListener('click', function () {
+            var socialLinks = document.getElementById('menu-links');
+            if (socialLinks.classList.contains('hidden')) {
+                socialLinks.classList.remove('hidden');
+            } else {
+                socialLinks.classList.add('hidden');
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.menu').forEach(item => {
+                item.addEventListener('click', event => {
+                    document.querySelectorAll('.content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    const target = event.target.getAttribute('data-target');
+                    document.getElementById(target).classList.add('active');
+
+                    if (target !== 'announcements') {
+                        markAnnouncementsAsRead();
+                    }
+                });
+            });
+            document.getElementById('clubs').classList.add('active');
+
+            document.getElementById('toggle-view-btn').addEventListener('click', function () {
+                var monthlyView = document.getElementById('monthly-view');
+                var listView = document.getElementById('list-view');
+                var toggleButton = document.getElementById('toggle-view-btn');
+                var icon = toggleButton.querySelector('i');
+
+                if (monthlyView.style.display === 'none') {
+                    monthlyView.style.display = 'block';
+                    listView.style.display = 'none';
+                    icon.classList.remove('fa-list');
+                    icon.classList.add('fa-calendar-alt');
+                } else {
+                    monthlyView.style.display = 'none';
+                    listView.style.display = 'block';
+                    icon.classList.remove('fa-calendar-alt');
+                    icon.classList.add('fa-list');
+                }
+            });
+        });
+
+        function markAnnouncementsAsRead() {
+            document.querySelectorAll('.announcement.unread').forEach(announcement => {
+                announcement.classList.remove('unread');
+            });
+            document.getElementById('unread-count').textContent = ``;
+        }
+    </script>
+</body>
+
+</html>
