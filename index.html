@@ -8,7 +8,10 @@
     <meta name="keywords" content="Ahmet Furkan Bilgin, Bilgisayar Mühendisliği, Full Stack Developer, Flask, Flutter, TensorFlow, GTÜ, Mobil Uygulama Geliştirme, Web Geliştirme">
     <meta name="author" content="Ahmet Furkan Bilgin">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://www.ahmetfurkanbilgin.com" />
+    <link rel="canonical" href="https://www.ahmetfurkanbilgin.com">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/images/cv.png">
+    <!-- Fontlar ve CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -103,6 +106,7 @@
             opacity: 0;
             transform: translateY(30px);
             text-align: center;
+            cursor: pointer;
         }
 
         .skill-card.active {
@@ -136,55 +140,46 @@
             color: #ccc;
         }
 
-        /* Projects Section */
+        /* Projeler Bölümü */
         .projects {
             padding: 5rem 0;
         }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
+        .projects h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #007BFF, #00C8FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .project-card {
-            background: #333;
-            border-radius: 10px;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            position: relative;
-            transition: all 0.3s;
-            opacity: 0;
-            transform: translateY(30px);
+        .project {
+            margin-bottom: 4rem;
         }
 
-        .project-card.active {
-            opacity: 1;
-            transform: translateY(0);
+        .project h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
         }
 
-        .project-card:hover {
-            transform: rotateX(5deg) rotateY(5deg) scale(1.05);
-        }
-
-        .project-image {
-            height: 200px;
-            background: #444;
+        .project-gallery {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 1rem 0;
         }
 
-        .project-image::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: linear-gradient(45deg, transparent 50%, rgba(0,123,255,0.1) 100%);
-            animation: shine 3s infinite;
+        .project-gallery img {
+            height: 300px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+
+        .project-gallery img:hover {
+            transform: scale(1.05);
         }
 
         /* Contact ve Social */
@@ -223,12 +218,6 @@
             0%, 100% { transform: translate(-50%, -50%) scale(1); }
             50% { transform: translate(-50%, -50%) scale(1.05); }
         }
-
-        @keyframes shine {
-            to {
-                transform: translateX(100%);
-            }
-        }
     </style>
 </head>
 <body>
@@ -242,7 +231,6 @@
                     <a href="https://tr.linkedin.com/in/ahmet-furkan-bilgin-b991641b8" target="_blank" class="social-link">
                         <i class="fab fa-linkedin"></i>
                     </a>
-                    </a>
                 </div>
             </div>
         </div>
@@ -253,12 +241,12 @@
         <div class="container">
             <h2>Yeteneklerim</h2>
             <div class="skill-cards">
-                <div class="skill-card">
+                <div class="skill-card" onclick="scrollToSection('gtu-mobil')">
                     <i class="fab fa-python skill-icon"></i>
                     <h3>Web Geliştirme</h3>
                     <p>Flask ile backend ve modern frontend teknolojileri</p>
                 </div>
-                <div class="skill-card">
+                <div class="skill-card" onclick="scrollToSection('gtu-mobil')">
                     <i class="fab fa-android skill-icon"></i>
                     <h3>Mobil Uygulama</h3>
                     <p>Flutter ile cross-platform mobil uygulama geliştirme</p>
@@ -273,56 +261,41 @@
     </section>
 
     <!-- Projeler Bölümü -->
-    <!--
     <section class="projects">
         <div class="container">
             <h2>Projelerim</h2>
-            <div class="project-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-laptop-code fa-3x"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>Web Projesi</h3>
-                        <p>Flask ile geliştirilmiş modern web uygulaması</p>
-                    </div>
+
+            <!-- GTU Mobil Projesi -->
+            <div class="project" id="gtu-mobil">
+                <h3>GTU Mobil</h3>
+                <div class="project-gallery">
+                    <img src="/images/gtumobil1.jpg" alt="GTU Mobil Projesi 1">
+                    <img src="/images/gtumobil2.jpg" alt="GTU Mobil Projesi 2">
+                    <img src="/images/gtumobil3.jpg" alt="GTU Mobil Projesi 3">
+                    <img src="/images/gtumobil4.jpg" alt="GTU Mobil Projesi 4">
+                    <img src="/images/gtumobil6.jpg" alt="GTU Mobil Projesi 6">
                 </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-mobile-alt fa-3x"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>Mobil Uygulama</h3>
-                        <p>Flutter ile geliştirilmiş cross-platform mobil uygulama</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-robot fa-3x"></i>
-                    </div>
-                    <div class="project-info">
-                        <h3>Yapay Zeka Projesi</h3>
-                        <p>TensorFlow ile geliştirilmiş makine öğrenmesi modeli</p>
-                    </div>
+            </div>
+
+            <!-- Diğer Projeler -->
+            <div class="project">
+                <h3>Diğer Projeler</h3>
+                <div class="project-gallery">
+                    <img src="/images/proje1.jpg" alt="Proje 1">
+                    <img src="/images/proje2.jpg" alt="Proje 2">
+                    <img src="/images/proje3.jpg" alt="Proje 3">
                 </div>
             </div>
         </div>
     </section>
-    -->
 
     <!-- İletişim Bölümü -->
     <section class="contact">
         <div class="container">
-            <!--<h2>İletişim</h2>
-            <p>Benimle iletişime geçmek için aşağıdaki sosyal medya hesaplarımı kullanabilirsiniz.</p>
             <div class="social-links">
-                <a href="https://tr.linkedin.com/in/ahmet-furkan-bilgin-b991641b8" target="_blank" class="social-link">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-            -->
-                <!--<a href="https://github.com/Nick4700" target="_blank" class="social-link">
+                <a href="https://github.com/Nick4700" target="_blank" class="social-link">
                     <i class="fab fa-github"></i>
-                </a>-->
+                </a>
             </div>
         </div>
     </section>
@@ -341,7 +314,7 @@
             });
         }, observerOptions);
 
-        document.querySelectorAll('.skill-card, .project-card').forEach(element => {
+        document.querySelectorAll('.skill-card').forEach(element => {
             observer.observe(element);
         });
 
@@ -352,6 +325,14 @@
             const y = (window.innerHeight - e.pageY) / 50;
             hero.style.transform = `translateX(${x}px) translateY(${y}px)`;
         });
+
+        // Flutter kartına tıklanınca projeler bölümüne git
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     </script>
 </body>
 </html>
