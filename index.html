@@ -164,72 +164,42 @@
             color: var(--secondary-color);
         }
 
-        .carousel {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .carousel-inner {
+        .project-gallery {
             display: flex;
-            align-items: center;
-            transition: transform 0.5s ease-in-out;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 1rem 0;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
         }
 
-        .carousel-item {
-            flex: 0 0 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-        }
-
-        .carousel-item img {
-            width: 80%;
-            max-width: 600px;
+        .project-gallery img {
+            height: 300px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, opacity 0.3s;
-        }
-
-        .carousel-item.prev,
-        .carousel-item.next {
-            opacity: 0.5;
-            transform: scale(0.8);
-        }
-
-        .carousel-item.prev {
-            transform: translateX(-50%) scale(0.8);
-        }
-
-        .carousel-item.next {
-            transform: translateX(50%) scale(0.8);
-        }
-
-        .carousel-control {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            scroll-snap-align: start;
             cursor: pointer;
-            z-index: 1;
+            flex: 0 0 auto;
         }
 
-        .carousel-control.prev {
-            left: 10px;
+        .project-gallery img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
         }
 
-        .carousel-control.next {
-            right: 10px;
-        }
+        /* Mobil Stilleri */
+        @media (max-width: 768px) {
+            .project-gallery {
+                gap: 0.5rem;
+                padding: 0.5rem 0;
+            }
 
-        .carousel-control:hover {
-            background-color: rgba(0, 0, 0, 0.8);
+            .project-gallery img {
+                height: 200px;
+                width: auto;
+                max-width: 80%;
+            }
         }
 
         /* Contact ve Social */
@@ -318,40 +288,22 @@
             <!-- GTU Mobil Projesi -->
             <div class="project" id="gtu-mobil">
                 <h3>GTU Mobil</h3>
-                <div class="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item prev">
-                            <img src="/images/gtumobil1.jpg" alt="GTU Mobil Projesi 1">
-                        </div>
-                        <div class="carousel-item active">
-                            <img src="/images/gtumobil2.jpg" alt="GTU Mobil Projesi 2">
-                        </div>
-                        <div class="carousel-item next">
-                            <img src="/images/gtumobil4.jpg" alt="GTU Mobil Projesi 4">
-                        </div>
-                    </div>
-                    <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
-                    <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+                <div class="project-gallery">
+                    <img src="/images/gtumobil1.jpg" alt="GTU Mobil Projesi 1">
+                    <img src="/images/gtumobil2.jpg" alt="GTU Mobil Projesi 2">
+                    <img src="/images/gtumobil4.jpg" alt="GTU Mobil Projesi 4">
+                    <img src="/images/gtumobil5.jpg" alt="GTU Mobil Projesi 5">
+                    <img src="/images/gtumobil6.jpg" alt="GTU Mobil Projesi 6">
                 </div>
             </div>
 
             <!-- Diğer Projeler -->
             <div class="project">
                 <h3>Diğer Projeler</h3>
-                <div class="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item prev">
-                            <img src="/images/proje1.jpg" alt="Proje 1">
-                        </div>
-                        <div class="carousel-item active">
-                            <img src="/images/proje2.jpg" alt="Proje 2">
-                        </div>
-                        <div class="carousel-item next">
-                            <img src="/images/proje3.jpg" alt="Proje 3">
-                        </div>
-                    </div>
-                    <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
-                    <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+                <div class="project-gallery">
+                    <img src="/images/proje1.jpg" alt="Proje 1">
+                    <img src="/images/proje2.jpg" alt="Proje 2">
+                    <img src="/images/proje3.jpg" alt="Proje 3">
                 </div>
             </div>
         </div>
@@ -401,46 +353,6 @@
                 section.scrollIntoView({ behavior: 'smooth' });
             }
         }
-
-        // Carousel işlevleri
-        let currentIndex = 1;
-
-        function showSlide(index) {
-            const carouselInner = document.querySelector('.carousel-inner');
-            const totalSlides = document.querySelectorAll('.carousel-item').length;
-            if (index >= totalSlides) {
-                currentIndex = 0;
-            } else if (index < 0) {
-                currentIndex = totalSlides - 1;
-            } else {
-                currentIndex = index;
-            }
-            const offset = -currentIndex * 100;
-            carouselInner.style.transform = `translateX(${offset}%)`;
-
-            // Aktif, önceki ve sonraki slaytları güncelle
-            document.querySelectorAll('.carousel-item').forEach((item, i) => {
-                item.classList.remove('active', 'prev', 'next');
-                if (i === currentIndex) {
-                    item.classList.add('active');
-                } else if (i === currentIndex - 1 || (currentIndex === 0 && i === totalSlides - 1)) {
-                    item.classList.add('prev');
-                } else if (i === currentIndex + 1 || (currentIndex === totalSlides - 1 && i === 0)) {
-                    item.classList.add('next');
-                }
-            });
-        }
-
-        function nextSlide() {
-            showSlide(currentIndex + 1);
-        }
-
-        function prevSlide() {
-            showSlide(currentIndex - 1);
-        }
-
-        // Otomatik kaydırma (isteğe bağlı)
-        setInterval(nextSlide, 5000); // 5 saniyede bir otomatik kaydır
     </script>
 </body>
 </html>
