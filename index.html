@@ -174,24 +174,38 @@
 
         .carousel-inner {
             display: flex;
+            align-items: center;
             transition: transform 0.5s ease-in-out;
         }
 
         .carousel-item {
-            min-width: 100%;
-            box-sizing: border-box;
+            flex: 0 0 100%;
             display: flex;
             justify-content: center;
             align-items: center;
-            position: relative;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         }
 
         .carousel-item img {
-            width: 100%;
+            width: 80%;
             max-width: 600px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+
+        .carousel-item.prev,
+        .carousel-item.next {
+            opacity: 0.5;
+            transform: scale(0.8);
+        }
+
+        .carousel-item.prev {
+            transform: translateX(-50%) scale(0.8);
+        }
+
+        .carousel-item.next {
+            transform: translateX(50%) scale(0.8);
         }
 
         .carousel-control {
@@ -306,20 +320,14 @@
                 <h3>GTU Mobil</h3>
                 <div class="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item">
+                        <div class="carousel-item prev">
                             <img src="/images/gtumobil1.jpg" alt="GTU Mobil Projesi 1">
                         </div>
-                        <div class="carousel-item">
+                        <div class="carousel-item active">
                             <img src="/images/gtumobil2.jpg" alt="GTU Mobil Projesi 2">
                         </div>
-                        <div class="carousel-item">
+                        <div class="carousel-item next">
                             <img src="/images/gtumobil4.jpg" alt="GTU Mobil Projesi 4">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/images/gtumobil5.jpg" alt="GTU Mobil Projesi 5">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/images/gtumobil6.jpg" alt="GTU Mobil Projesi 6">
                         </div>
                     </div>
                     <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
@@ -332,13 +340,13 @@
                 <h3>Diğer Projeler</h3>
                 <div class="carousel">
                     <div class="carousel-inner">
-                        <div class="carousel-item">
+                        <div class="carousel-item prev">
                             <img src="/images/proje1.jpg" alt="Proje 1">
                         </div>
-                        <div class="carousel-item">
+                        <div class="carousel-item active">
                             <img src="/images/proje2.jpg" alt="Proje 2">
                         </div>
-                        <div class="carousel-item">
+                        <div class="carousel-item next">
                             <img src="/images/proje3.jpg" alt="Proje 3">
                         </div>
                     </div>
@@ -395,7 +403,7 @@
         }
 
         // Carousel işlevleri
-        let currentIndex = 0;
+        let currentIndex = 1;
 
         function showSlide(index) {
             const carouselInner = document.querySelector('.carousel-inner');
@@ -409,6 +417,18 @@
             }
             const offset = -currentIndex * 100;
             carouselInner.style.transform = `translateX(${offset}%)`;
+
+            // Aktif, önceki ve sonraki slaytları güncelle
+            document.querySelectorAll('.carousel-item').forEach((item, i) => {
+                item.classList.remove('active', 'prev', 'next');
+                if (i === currentIndex) {
+                    item.classList.add('active');
+                } else if (i === currentIndex - 1 || (currentIndex === 0 && i === totalSlides - 1)) {
+                    item.classList.add('prev');
+                } else if (i === currentIndex + 1 || (currentIndex === totalSlides - 1 && i === 0)) {
+                    item.classList.add('next');
+                }
+            });
         }
 
         function nextSlide() {
